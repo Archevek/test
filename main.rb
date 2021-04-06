@@ -1,32 +1,18 @@
 require 'sinatra'
 require 'yaml/store'
+require 'sequel'
+require 'json'
+DB = Sequel.connect('sqlite:///home/taylor/snap/dbeaver-ce/104/.local/share/DBeaverData/workspace6/.metadata/sample-database-sqlite-1/Chinook.db')
 get '/' do
   @title = 'Welcome to Main!'
   erb :index
 end
 
-CHOICES = {
-  'HAM' => 'Hamburger',
-  'PIZ' => 'Pizza',
-  'CUR' => 'Curry',
-  'NOO' => 'Noodles'
-}.freeze
+AlID = {0=>'Album ID'}
 
-post '/cast' do
-  @title = 'Thanks for casting your vote!'
-  @vote  = params['vote']
-  @store = YAML::Store.new 'votes.yml'
-  @store.transaction do
-    @store['votes'] ||= {}
-    @store['votes'][@vote] ||= 0
-    @store['votes'][@vote] += 1
-  end
-  erb :cast
-end
+get '/album/:albumid' do
 
-get '/results' do
-  @title = 'Results so far:'
-  @store = YAML::Store.new 'votes.yml'
-  @votes = @store.transaction { @store['votes'] }
-  erb :results
+  @album = DB[:Album].where(AlbumId: params[:albumid]).select(:Title, :Artistid)
+  p @album.sql
+  @album.first.to_json
 end

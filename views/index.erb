@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html>
-    <p>What's for dinner?</p>
-    <form action='cast' method='post'>
+    <p>album ID?</p>
+    <form action='album' method='get'>
       <ul class='unstyled'>
-        <% CHOICES.each do |id, text| %>
+        <% AlID.each do |id, text| %>
           <li>
-            <label class='radio'>
-              <input type='radio' name='vote' value='<%= id %>' id='vote_<%= id %>' />
+            <label class='textbox'>
+              <input type='text' name='vote' value='<%= id %>' id='vote_<%= id %>' />
               <%= text %>
             </label>
           </li>
         <% end %>
       </ul>
-      <button type='submit' class='btn btn-primary'>Cast this vote!</button>
+      <button type='submit' class='btn btn-primary'> Results</button>
     </form>
   </body>
 </html>
